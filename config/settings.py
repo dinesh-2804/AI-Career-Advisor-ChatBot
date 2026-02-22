@@ -1,0 +1,3 @@
+MODEL_NAME = 'gemini-3-flash-preview'
+TEMPERATURE = 0.6
+MAX_OUTPUT_TOKENS = 3500

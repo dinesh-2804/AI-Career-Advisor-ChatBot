@@ -1,0 +1,14 @@
+2026-02-22 11:19:52,894 - INFO - Application started.
+2026-02-22 11:19:52,928 - INFO - Chatbot initialized.
+2026-02-22 11:28:59,829 - INFO - Application started.
+2026-02-22 11:29:00,255 - INFO - Chatbot initialized.
+2026-02-22 12:21:09,133 - INFO - Application started.
+2026-02-22 12:21:09,927 - INFO - CareerChatbot initialized.
+2026-02-22 12:21:09,928 - INFO - Chatbot initialized.
+2026-02-22 12:22:02,247 - INFO - Application started.
+2026-02-22 12:22:02,253 - INFO - User input received: which IT side best for go
+2026-02-22 12:22:02,669 - INFO - Processing user input.
+2026-02-22 12:22:02,669 - INFO - Gemini API call started.
+2026-02-22 12:22:32,738 - INFO - Gemini API call successful and response processed.
+2026-02-22 12:22:32,739 - INFO - Response successfully generated.
+2026-02-22 12:22:32,742 - INFO - Response displayed successfully.
