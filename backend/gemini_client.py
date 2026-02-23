@@ -1,4 +1,3 @@
-import google.generativeai as genai
 import os
 from dotenv import load_dotenv
 from config.settings import MODEL_NAME, TEMPERATURE, MAX_OUTPUT_TOKENS
@@ -10,26 +9,51 @@ logger = setup_logger()
 # Load environment variables
 load_dotenv()
 
-# Configure Gemini API
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+# Prefer the new `google.genai` package; fall back to the deprecated `google.generativeai`
+try:
+    from google import genai  # new package
+    _USE_NEW_GENAI = True
+except Exception:
+    import google.generativeai as genai  # type: ignore
+    _USE_NEW_GENAI = False
+
+# Configure client for the new package or call configure for the old package
+if _USE_NEW_GENAI:
+    _CLIENT = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+else:
+    genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 
 class GeminiClient:
 
     def __init__(self):
-        self.model = genai.GenerativeModel(MODEL_NAME)
+        if _USE_NEW_GENAI:
+            self.client = _CLIENT
+            self.model_name = MODEL_NAME
+        else:
+            self.model = genai.GenerativeModel(MODEL_NAME)
 
     def generate_response(self, prompt):
         try:
             logger.info("Gemini API call started.")
 
-            response = self.model.generate_content(
-                prompt,
-                generation_config={
-                    "temperature": TEMPERATURE,
-                    "max_output_tokens": MAX_OUTPUT_TOKENS
-                }
-            )
+            if _USE_NEW_GENAI:
+                response = self.client.models.generate_content(
+                    model=self.model_name,
+                    contents=prompt,
+                    config={
+                        "temperature": TEMPERATURE,
+                        "max_output_tokens": MAX_OUTPUT_TOKENS,
+                    },
+                )
+            else:
+                response = self.model.generate_content(
+                    prompt,
+                    generation_config={
+                        "temperature": TEMPERATURE,
+                        "max_output_tokens": MAX_OUTPUT_TOKENS
+                    }
+                )
 
             # ------------------ Response Validation ------------------
 
